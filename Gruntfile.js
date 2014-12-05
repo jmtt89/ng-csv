@@ -6,6 +6,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     library: grunt.file.readJSON('bower.json'),
+
     concat: {
       options: {
         separator: ''
@@ -70,6 +71,55 @@ module.exports = function (grunt) {
         'src/**/*'
       ],
       tasks: ['default']
+    },
+
+    // Empties folders to start fresh
+    clean: {
+      dist: {
+        files: [{
+          dot: false,
+          src: [
+            '.tmp',
+            'dist{,*/}*',
+            '!dist/.git*'
+          ]
+        }]
+      },
+      server: '.tmp'
+    },
+
+    // Create examples folder to be deployed to github pages
+    copy: {
+      dist: {
+        files: [
+          {
+            expand: true,
+            dot: true,
+            cwd: '.',
+            dest: 'dist',
+            src: [
+              'example/**',
+              'build/**'
+            ]
+          }
+        ]
+      }
+    },
+
+    // Deploy
+    buildcontrol: {
+      options: {
+        dir: 'dist',
+        commit: true,
+        push: true,
+        message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+      },
+      pages: {
+        options: {
+          remote: 'git@github.com:asafdav/ng-csv.git',
+          branch: 'gh-pages'
+        }
+      }
     }
   });
 
@@ -80,9 +130,13 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-build-control');
 
   grunt.registerTask('test', ['jshint', 'karma:unit']);
   grunt.registerTask('default', ['jshint:beforeConcat', 'concat', 'jshint:afterConcat', 'uglify']);
   grunt.registerTask('livereload', ['default', 'watch']);
+  grunt.registerTask('deploy', ['clean:dist', 'copy:dist', 'buildcontrol:pages']);
 
 };

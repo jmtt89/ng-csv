@@ -10,12 +10,32 @@ An AngularJS simple directive that turns arrays and objects into downloadable CS
 * angular-sanitize.js, any version starting with 1
 
 
+## How to get it ?
+
+#### Manual Download
+Download the from [here](https://github.com/asafdav/ng-csv/releases)
+
+#### Bower
+```
+bower install ng-csv
+```
+
+#### Npm
+```
+npm install ng-csv
+```
+
+#### CDN
+ng-csv is available at [cdnjs](http://www.cdnjs.com/libraries/ng-csv)
+
+
 ## Usage
-1. Add ng-csv.min.js to your main file (index.html)
+1. Add ng-csv.min.js to your main file (index.html).
+please also make sure you're adding angular-sanitize.min.js.
 
 2. Set `ngCsv` as a dependency in your module
   ```javascript
-  var myapp = angular.module('myapp', ['ngCsv'])
+  var myapp = angular.module('myapp', ['ngSanitize', 'ngCsv'])
   ```
 
 3. Add ng-csv directive to the wanted element, example:
@@ -25,7 +45,7 @@ An AngularJS simple directive that turns arrays and objects into downloadable CS
 
 ngCsv attributes
 ----------------
-* ng-csv: The data array
+* ng-csv: The data array - Could be an expression, a value or a promise.
 * filename: The filename that will be stored on the user's computer
 * csv-header: If provided, would use this attribute to create a header row
 
@@ -33,14 +53,16 @@ ngCsv attributes
   <button type="button" ng-csv="getArray()" csv-header="['Field A', 'Field B', 'Field C']" filename="test.csv">Export</button>
   ```
 
-* field-separator: Defines the field separator character (default is)
+* field-separator: Defines the field separator character (default is ,)
 * text-delimiter: If provided, will use this characters to "escape" fields, otherwise will use double quotes as deafult
 * quote-strings: If provided, will force escaping of every string field.
-* lazy-load: If defined and set to true, ngCsv will generate the data string only on demand. See the lazy_load example for more details. 
+* lazy-load: If defined and set to true, ngCsv will generate the data string only on demand. See the lazy_load example for more details.
+* add-bom: Add the Byte Order Mark, use this option if you are getting an unexpected char when opening the file on any windows App.
 
+## Examples
+You can check out this live example here: https://asafdav.github.io/ng-csv/example/
 
-## Example
-You can check out this live example here: http://jsfiddle.net/asafdav/dR6Nb/
+For lazy load example using promises see this example: https://asafdav.github.io/ng-csv/example/lazy_load.html
 
 Supported Browsers
 ------------------
